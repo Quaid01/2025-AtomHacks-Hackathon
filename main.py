@@ -15,30 +15,66 @@ class MyGame(arcade.Window):
         self.background_color = arcade.csscolor.GRAY
         # Sprite lists (for groups of sprites)
         self.all_sprites_list = None
+        self.background_sprite_stuffs =  None
+        self.collectibles = None
 
     def setup(self):
         """ Set up your game here. Call this to restart the game. """
         # Sprite lists
         self.all_sprites_list = arcade.SpriteList()
-        self.background_sprite = arcade.Sprite("resources/Temp_Back.png", scale = 1)
+        self.background_sprite_stuffs = arcade.SpriteList()
+        self.collectibles = arcade.SpriteList()
+        self.background_sprite = arcade.Sprite("resources/Game Map Updated.png", scale = 1)
         self.background_sprite.center_x = SCREEN_WIDTH / 2
         self.background_sprite.center_y = SCREEN_HEIGHT/2
-        self.all_sprites_list.append(self.background_sprite)
+        self.background_sprite_stuffs.append(self.background_sprite)
         # Set up the player
         self.player_sprite = arcade.Sprite("resources/Player.png", scale=0.5)
         self.player_sprite.center_x = SCREEN_WIDTH / 2
         self.player_sprite.center_y = 50
         self.all_sprites_list.append(self.player_sprite)
 
+        self.muffin = arcade.Sprite("resources/ChocolateMuffin.png",scale=0.4)
+        self.muffin.center_x = SCREEN_WIDTH / 2
+        self.muffin.center_y = 50
+        self.collectibles.append(self.muffin)
+
+        self.couch = arcade.Sprite("resources/Couch.png", scale=0.4)
+        self.couch.center_x = SCREEN_WIDTH / 2
+        self.couch.center_y = 100
+        self.collectibles.append(self.couch)
+
+        self.crystals = arcade.Sprite("resources/Crystals.png", scale=0.4)
+        self.crystals.center_x = SCREEN_WIDTH / 2
+        self.crystals.center_y = 150
+        self.collectibles.append(self.crystals)
+
+        self.TreePainting = arcade.Sprite("resources/TreePainting.png", scale=0.4)
+        self.TreePainting.center_x = SCREEN_WIDTH / 2
+        self.TreePainting.center_y = 200
+        self.collectibles.append(self.TreePainting)
+
+   
+
     def on_draw(self):
         """ Render the screen. """
         self.clear()  # Clear the screen and start rendering
+
+        self.background_sprite_stuffs.draw()
+
+        self.collectibles.draw()
+
         self.all_sprites_list.draw()  # Draw all sprites
+        
 
     def on_update(self, delta_time):
         """ All the logic to move, and the game logic goes here. """
         self.all_sprites_list.update()
-
+        self.collectibles_hit_list = arcade.check_for_collision_with_list(
+        self.player_sprite, self.collectibles
+       )
+        for object in self.collectibles_hit_list:
+            object.remove_from_sprite_lists()
     def on_key_press(self, key, modifiers):
         """ Called whenever a key is pressed. """
         if key == arcade.key.LEFT:
