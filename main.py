@@ -1,8 +1,8 @@
 import arcade
 
 # Constants
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 800
 SCREEN_TITLE = "Flea'n Market"
 
 class MyGame(arcade.Window):
