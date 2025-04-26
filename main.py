@@ -1,9 +1,9 @@
 import arcade
 
 # Constants
-SCREEN_WIDTH = 800
+SCREEN_WIDTH = 
 SCREEN_HEIGHT = 600
-SCREEN_TITLE = "Simple Hackathon Game"
+SCREEN_TITLE = "Flea'n Market"
 
 class MyGame(arcade.Window):
     def __init__(self):
@@ -43,11 +43,18 @@ class MyGame(arcade.Window):
             self.player_sprite.change_x = -5
         elif key == arcade.key.RIGHT:
             self.player_sprite.change_x = 5
+        elif key == arcade.key.UP:
+            self.player_sprite.change_y = 5
+        elif key == arcade.key.DOWN:
+            self.player_sprite.change_y = -5
 
     def on_key_release(self, key, modifiers):
         """ Called when the user releases a key. """
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player_sprite.change_x = 0
+        elif key == arcade.key.UP or key == arcade.key.DOWN:
+            self.player_sprite.change_y = 0
+
 
 # Main code to start the game
 if __name__ == "__main__":
