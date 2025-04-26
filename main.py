@@ -13,9 +13,20 @@ class MyGame(arcade.Window):
         self.player_sprite = None
         self.background_sprite = None
         self.background_color = arcade.csscolor.GRAY
+        self.gui_camera = None
+        self.timer = None
+        self.score_text = None
+        self.input_check = True
+        self.game_over_ye = arcade.Text("GAME OVER", x = SCREEN_WIDTH/2, y = SCREEN_HEIGHT/2,font_size=30,anchor_x="center")
+
+
+        #Camera things:
+
+        self.camera = None 
         # Sprite lists (for groups of sprites)
         self.all_sprites_list = None
         self.background_sprite_stuffs =  None
+        self.score_text = arcade.Text(f"Time (Seconds): {self.timer}", x = 0, y = 5)
 
     def setup(self):
         """ Set up your game here. Call this to restart the game. """
@@ -31,34 +42,62 @@ class MyGame(arcade.Window):
         self.player_sprite.center_x = SCREEN_WIDTH / 2
         self.player_sprite.center_y = 50
         self.all_sprites_list.append(self.player_sprite)
+        
+        self.gui_camera = arcade.Camera2D()
+        self.timer = 600
+
+
+        self.camera = arcade.Camera2D(zoom=2)
 
     def on_draw(self):
         """ Render the screen. """
         self.clear()  # Clear the screen and start rendering
         self.background_sprite_stuffs.draw()
         self.all_sprites_list.draw()  # Draw all sprites
+
+        self.gui_camera.use()
+        self.score_text.draw()
+        self.game_over_ye.draw()
+        if self.timer <=0:
+            self.game_over_ye.draw()
+
+        self.camera.use()
+        
         
 
     def on_update(self, delta_time):
         """ All the logic to move, and the game logic goes here. """
+        self.camera.position = self.player_sprite.position
         self.all_sprites_list.update()
+        if self.timer > 0:
+            self.timer -= 1
+        self.score_text = arcade.Text(f"Time (Seconds): {int(self.timer/60)}", x = 0, y = SCREEN_HEIGHT-15)
+        if self.timer <= 0:
+            self.input_check = False
+            
+
 
     def on_key_press(self, key, modifiers):
         """ Called whenever a key is pressed. """
-        if key == arcade.key.LEFT:
-            self.player_sprite.change_x = -5
-        elif key == arcade.key.RIGHT:
-            self.player_sprite.change_x = 5
-        elif key == arcade.key.UP:
-            self.player_sprite.change_y = 5
-        elif key == arcade.key.DOWN:
-            self.player_sprite.change_y = -5
+        if self.input_check:
+            if key == arcade.key.LEFT:
+                self.player_sprite.change_x = -5
+            elif key == arcade.key.RIGHT:
+                self.player_sprite.change_x = 5
+            elif key == arcade.key.UP:
+                self.player_sprite.change_y = 5
+            elif key == arcade.key.DOWN:
+                self.player_sprite.change_y = -5
 
     def on_key_release(self, key, modifiers):
         """ Called when the user releases a key. """
-        if key == arcade.key.LEFT or key == arcade.key.RIGHT:
+        if key == arcade.key.LEFT:
             self.player_sprite.change_x = 0
-        elif key == arcade.key.UP or key == arcade.key.DOWN:
+        elif key == arcade.key.RIGHT:
+            self.player_sprite.change_x = 0
+        elif key == arcade.key.UP:
+            self.player_sprite.change_y = 0
+        elif key == arcade.key.DOWN:
             self.player_sprite.change_y = 0
 
 
