@@ -27,6 +27,7 @@ class MyGame(arcade.Window):
         # Sprite lists (for groups of sprites)
         self.all_sprites_list = None
         self.background_sprite_stuffs =  None
+        self.collectibles = None
         self.score_text = arcade.Text(f"Time (Seconds): {self.timer}", x = 0, y = 5)
 
     def setup(self):
@@ -34,7 +35,8 @@ class MyGame(arcade.Window):
         # Sprite lists
         self.all_sprites_list = arcade.SpriteList()
         self.background_sprite_stuffs = arcade.SpriteList()
-        self.background_sprite = arcade.Sprite("resources/Temp_Back.png", scale = 1)
+        self.collectibles = arcade.SpriteList()
+        self.background_sprite = arcade.Sprite("resources/Game Map Updated.png", scale = 1)
         self.background_sprite.center_x = SCREEN_WIDTH / 2
         self.background_sprite.center_y = SCREEN_HEIGHT/2
         self.background_sprite_stuffs.append(self.background_sprite)
@@ -52,11 +54,39 @@ class MyGame(arcade.Window):
 
         self.camera = arcade.Camera2D(zoom=2)
 
+        self.muffin = arcade.Sprite("resources/ChocolateMuffin.png",scale=0.4)
+        self.muffin.center_x = SCREEN_WIDTH / 2
+        self.muffin.center_y = 50
+        self.collectibles.append(self.muffin)
+
+        self.couch = arcade.Sprite("resources/Couch.png", scale=0.4)
+        self.couch.center_x = SCREEN_WIDTH / 2
+        self.couch.center_y = 100
+        self.collectibles.append(self.couch)
+
+        self.crystals = arcade.Sprite("resources/Crystals.png", scale=0.4)
+        self.crystals.center_x = SCREEN_WIDTH / 2
+        self.crystals.center_y = 150
+        self.collectibles.append(self.crystals)
+
+        self.TreePainting = arcade.Sprite("resources/TreePainting.png", scale=0.4)
+        self.TreePainting.center_x = SCREEN_WIDTH / 2
+        self.TreePainting.center_y = 200
+        self.collectibles.append(self.TreePainting)
+
+   
+
     def on_draw(self):
         """ Render the screen. """
         self.clear()  # Clear the screen and start rendering
+
+
         self.background_sprite_stuffs.draw()
+
+        self.collectibles.draw()
+
         self.all_sprites_list.draw()  # Draw all sprites
+        
 
         self.gui_camera.use()
         self.score_text.draw()
@@ -72,6 +102,12 @@ class MyGame(arcade.Window):
         """ All the logic to move, and the game logic goes here. """
         self.camera.position = self.player_sprite.position
         self.all_sprites_list.update()
+        self.collectibles_hit_list = arcade.check_for_collision_with_list(
+        self.player_sprite, self.collectibles
+       )
+        for object in self.collectibles_hit_list:
+            object.remove_from_sprite_lists()
+        
         if self.timer > 0:
             self.timer -= 1
         self.score_text = arcade.Text(f"Time (Seconds): {int(self.timer/60)}", x = 0, y = SCREEN_HEIGHT-15)
@@ -83,7 +119,6 @@ class MyGame(arcade.Window):
             self.reset_timer -= 1
         if self.reset_timer <= 0:
             self.setup()
-            
 
 
     def on_key_press(self, key, modifiers):
