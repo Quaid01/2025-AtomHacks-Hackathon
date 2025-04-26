@@ -1,7 +1,7 @@
 import arcade
 
 # Constants
-SCREEN_WIDTH = 
+SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Flea'n Market"
 
@@ -9,11 +9,10 @@ class MyGame(arcade.Window):
     def __init__(self):
         # Initialize the parent class (arcade.Window)
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-
         # Attributes to hold our player sprite
         self.player_sprite = None
-        self.background_color = arcade.csscolor.CORNFLOWER_BLUE
-
+        self.background_sprite = None
+        self.background_color = arcade.csscolor.GRAY
         # Sprite lists (for groups of sprites)
         self.all_sprites_list = None
 
@@ -21,7 +20,10 @@ class MyGame(arcade.Window):
         """ Set up your game here. Call this to restart the game. """
         # Sprite lists
         self.all_sprites_list = arcade.SpriteList()
-
+        self.background_sprite = arcade.Sprite("resources/Temp_Back.png", scale = 1)
+        self.background_sprite.center_x = SCREEN_WIDTH / 2
+        self.background_sprite.center_y = SCREEN_HEIGHT/2
+        self.all_sprites_list.append(self.background_sprite)
         # Set up the player
         self.player_sprite = arcade.Sprite("resources/player.png", scale=0.5)
         self.player_sprite.center_x = SCREEN_WIDTH / 2
