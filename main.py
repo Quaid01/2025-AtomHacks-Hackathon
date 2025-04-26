@@ -25,7 +25,7 @@ class MyGame(arcade.Window):
         self.background_sprite.center_y = SCREEN_HEIGHT/2
         self.all_sprites_list.append(self.background_sprite)
         # Set up the player
-        self.player_sprite = arcade.Sprite("resources/player.png", scale=0.5)
+        self.player_sprite = arcade.Sprite("resources/Player.png", scale=0.5)
         self.player_sprite.center_x = SCREEN_WIDTH / 2
         self.player_sprite.center_y = 50
         self.all_sprites_list.append(self.player_sprite)
