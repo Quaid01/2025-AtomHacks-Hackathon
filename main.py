@@ -15,15 +15,17 @@ class MyGame(arcade.Window):
         self.background_color = arcade.csscolor.GRAY
         # Sprite lists (for groups of sprites)
         self.all_sprites_list = None
+        self.background_sprite_stuffs =  None
 
     def setup(self):
         """ Set up your game here. Call this to restart the game. """
         # Sprite lists
         self.all_sprites_list = arcade.SpriteList()
+        self.background_sprite_stuffs = arcade.SpriteList()
         self.background_sprite = arcade.Sprite("resources/Temp_Back.png", scale = 1)
         self.background_sprite.center_x = SCREEN_WIDTH / 2
         self.background_sprite.center_y = SCREEN_HEIGHT/2
-        self.all_sprites_list.append(self.background_sprite)
+        self.background_sprite_stuffs.append(self.background_sprite)
         # Set up the player
         self.player_sprite = arcade.Sprite("resources/Player.png", scale=0.5)
         self.player_sprite.center_x = SCREEN_WIDTH / 2
@@ -33,7 +35,9 @@ class MyGame(arcade.Window):
     def on_draw(self):
         """ Render the screen. """
         self.clear()  # Clear the screen and start rendering
+        self.background_sprite_stuffs.draw()
         self.all_sprites_list.draw()  # Draw all sprites
+        
 
     def on_update(self, delta_time):
         """ All the logic to move, and the game logic goes here. """
