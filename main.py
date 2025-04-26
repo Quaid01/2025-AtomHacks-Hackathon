@@ -18,7 +18,8 @@ class MyGame(arcade.Window):
         self.score_text = None
         self.input_check = True
         self.game_over_ye = arcade.Text("GAME OVER", x = SCREEN_WIDTH/2, y = SCREEN_HEIGHT/2,font_size=30,anchor_x="center")
-
+        self.reset_timer = 180
+        self.display_reset_timer = arcade.Text(f"Resetting in {int(self.reset_timer/60)}", x = SCREEN_WIDTH/2, y = SCREEN_HEIGHT/2 - 50,font_size=30,anchor_x="center")
 
         #Camera things:
 
@@ -47,6 +48,8 @@ class MyGame(arcade.Window):
         
         self.gui_camera = arcade.Camera2D()
         self.timer = 600
+        self.reset_timer = 180
+        self.input_check = True
 
 
         self.camera = arcade.Camera2D(zoom=2)
@@ -87,10 +90,10 @@ class MyGame(arcade.Window):
 
         self.gui_camera.use()
         self.score_text.draw()
-        self.game_over_ye.draw()
         if self.timer <=0:
             self.game_over_ye.draw()
-
+            self.display_reset_timer.draw()
+            
         self.camera.use()
         
         
@@ -108,8 +111,15 @@ class MyGame(arcade.Window):
         if self.timer > 0:
             self.timer -= 1
         self.score_text = arcade.Text(f"Time (Seconds): {int(self.timer/60)}", x = 0, y = SCREEN_HEIGHT-15)
+        self.display_reset_timer = arcade.Text(f"Resetting in {int(self.reset_timer/60)}", x = SCREEN_WIDTH/2, y = SCREEN_HEIGHT/2 - 50,font_size=30,anchor_x="center")
         if self.timer <= 0:
             self.input_check = False
+            self.player_sprite.change_x = 0
+            self.player_sprite.change_y = 0
+            self.reset_timer -= 1
+        if self.reset_timer <= 0:
+            self.setup()
+
 
     def on_key_press(self, key, modifiers):
         """ Called whenever a key is pressed. """
